@@ -1,13 +1,24 @@
-import { Fragment } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import Select from "react-select";
-import comminitiesSevice from "../../services/blog.service";
 import { CircularProgress } from "@mui/material";
+import BrokerSevice from "../../services/broker.service";
 
 export function AddPage(props) {
   const {formik} = props
   const [selectedimages, setSelectedimages] = useState([]);
+
+  useEffect(() => {
+    if(props.update && selectedimages.length === 0 && props.formik.values.file){
+      setSelectedimages([props.formik.values.file])
+    }
+  }, [formik])
+
+  const handleClose = () =>{
+    props.onHide()
+    formik.resetForm();
+    setSelectedimages([])
+  }
+  
   const showFileToUpload = (e) => {
     const selectedFile = e.currentTarget.files[0];
     formik.setFieldValue("file", selectedFile);
@@ -21,6 +32,7 @@ export function AddPage(props) {
       <Modal
         {...props}
         size="large"
+        onHide={handleClose}
         aria-labelledby="contained-modal-title-vcenter"
         centered
         backdrop="static"
@@ -31,7 +43,7 @@ export function AddPage(props) {
             <div className="card custom-card">
               <form onSubmit={formik.handleSubmit}>
                 <h4>
-                  {props.update ? "Update Blog" : "Add Blog"}
+                  {props.update ? "Update Broker" : "Add Broker"}
                 </h4>
                 <div className="col-12">
                   <Form.Group
@@ -45,7 +57,7 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Page Name: <span className="tx-danger">*</span>
+                      Heading: <span className="tx-danger">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -74,7 +86,7 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Link: <span className="tx-danger">*</span>
+                      Link:
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -177,39 +189,12 @@ export function AddPage(props) {
   );
 }
 
-export function DeleteImages({ getAllPage, card, cardName }) {
-  const [modalShow, setModalShow] = useState(false);
-  return (
-    <Fragment>
-      <button
-        style={{
-          position: "absolute",
-          right: "20px",
-          top: "155px",
-        }}
-        className="text-white ms-3 mb-2 btn btn-primary"
-        onClick={() => setModalShow(true)}
-      >
-        <i className="fas fa-trash"></i>
-      </button>
-
-      <DeleteImagesModal
-        show={modalShow}
-        cardName={cardName}
-        card={card}
-        getAllPage={getAllPage}
-        onHide={() => setModalShow(false)}
-      />
-    </Fragment>
-  );
-}
-
 export function DeleteImagesModal(props) {
   const { card } = props;
   const DeleteImages = async () => {
-    await comminitiesSevice.deleteComminities(card);
-    props.onHide();
+    await BrokerSevice.deleteBroker(card);
     props.getAllPage();
+    props.onHide()
   };
 
   return (
@@ -227,7 +212,7 @@ export function DeleteImagesModal(props) {
 
           <h4 className="tx-danger tx-semibold mg-b-20">Delete!</h4>
           <p className="mg-b-20 mg-x-20 text-lowercase">
-            are you sure want to delete {props.cardName} Communities !
+            are you sure want to delete {props.cardName} !
           </p>
 
           <Button

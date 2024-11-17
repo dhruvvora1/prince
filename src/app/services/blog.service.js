@@ -1,13 +1,13 @@
 import serverCall from "../../serverCall";
 
 const create = (create) => {
-  const response = serverCall.post(`/blog`, create);
+  const response = serverCall.post(`/blog/`, create);
   return response;
 };
 
 const Update = (create) => {
-  // const response = serverCall.post(`/communities/admin/update`, create);
-  // return response;
+  const response = serverCall.post(`/blog/update`, create);
+  return response;
 };
 
 const getAll = (pageNumber, pagesize) => {
@@ -23,8 +23,8 @@ const getByID = (id) => {
 };
 
 const Delete = (id) => {
-  // const response = serverCall.delete(`/communities/admin/delete?id=${id}`);
-  // return response;
+  const response = serverCall.delete(`/blog/${id}`);
+  return response;
 };
 
 const blogSevice = {

@@ -1,10 +1,11 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import Select from "react-select";
 import comminitiesSevice from "../../services/blog.service";
 import { CircularProgress } from "@mui/material";
-import learningSevice from "../../services/learning.service";
+import Multiyearevice from "../../services/intraday.service";
+import moment from "moment";
 
 export function AddPage(props) {
   const {formik} = props
@@ -17,25 +18,12 @@ export function AddPage(props) {
     setSelectedimages((previousImages) => [imageUrl]);
   };
 
-  useEffect(() => {
-    if(props.update && selectedimages.length === 0 && props.formik.values.file){
-      setSelectedimages([props.formik.values.file])
-    }
-  }, [formik])
-
-  const handleClose = () =>{
-    props.onHide()
-    formik.resetForm();
-    setSelectedimages([])
-  }
-
   return (
     <>
       <Modal
         {...props}
         size="large"
         aria-labelledby="contained-modal-title-vcenter"
-        onHide={handleClose}
         centered
         backdrop="static"
       >
@@ -45,7 +33,7 @@ export function AddPage(props) {
             <div className="card custom-card">
               <form onSubmit={formik.handleSubmit}>
                 <h4>
-                  {props.update ? "Update Learning" : "Add Learning"}
+                  {props.update ? "Update Intraday" : "Add Notification"}
                 </h4>
                 <div className="col-12">
                   <Form.Group
@@ -59,7 +47,7 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Heading: <span className="tx-danger">*</span>
+                      Title: <span className="tx-danger">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -101,35 +89,6 @@ export function AddPage(props) {
                       <p className="text-start error">
                         {" "}
                         {formik.errors.description}
-                      </p>
-                    ) : null}
-                  </Form.Group>
-                </div>
-                <div className="col-12">
-                  <Form.Group
-                    controlid="validationFormik101"
-                    className="position-relative"
-                  >
-                    <Form.Label
-                      style={{
-                        textAlign: "start",
-                        color: "#000",
-                        marginTop: "15px",
-                      }}
-                    >
-                      Link: <span className="tx-danger">*</span>
-                    </Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="link"
-                      placeholder="Link"
-                      value={formik.values.link}
-                      onChange={formik.handleChange}
-                    />
-                    {formik.errors.link && formik.touched.link ? (
-                      <p className="text-start error">
-                        {" "}
-                        {formik.errors.link}
                       </p>
                     ) : null}
                   </Form.Group>
@@ -223,9 +182,9 @@ export function AddPage(props) {
 export function DeleteImagesModal(props) {
   const { card } = props;
   const DeleteImages = async () => {
-    await learningSevice.Delete(card);
-    props.onHide();
+    await Multiyearevice.Delete(card);
     props.getAllPage();
+    props.onHide()
   };
 
   return (

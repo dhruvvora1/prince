@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import comminitiesSevice from "../../services/blog.service";
-import { AddPage, DeleteImages } from "./modalCommunities";
+import { AddPage, DeleteImages, DeleteImagesModal } from "./modalCommunities";
 import Select from "react-select";
-import pageTypeSevice from "../../services/pageType.service";
+import pageTypeSevice from "../../services/Dashboard.service";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import withLoader from "../../layout/loader/withLoader";
@@ -19,20 +19,19 @@ const Blog = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [listof, setListof] = useState([]);
-  const [selectedType, setSelectedType] = useState("");
   const [idListOfData, setIdListOfData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleCloseDelete = () => setOpenDelete(false);
   const [update, setUpdate] = useState("");
   const [loader, setLoader] = useState(false);
   const [selectedType2, setSelectedType2] = useState("");
   const [image, setImage] = useState("");
+  const [deleteId, setDeleteId] = useState("");
 
   const getAllPage = async () => {
-    const response = await blogSevice.getAll(
-      page+1,
-      10
-    );
+    const response = await blogSevice.getAll(page + 1, 10);
     setData(response.data.apiresponse.data.blog);
   };
 
@@ -60,11 +59,17 @@ const Blog = () => {
   );
 
   const initialValue = {
-    heading:"",
+    heading: "",
     description: "",
     link: "",
     file: null,
   };
+
+  const schema = yup.object().shape({
+    heading: yup.string().required("Heading is required"),
+    description: yup.string().required("Description is required"),
+    link: yup.string().required("Link is required")
+  });
 
   const handleFormSubmit = async (values, action) => {
     if (!values.id) {
@@ -110,13 +115,9 @@ const Blog = () => {
 
   const formik = useFormik({
     initialValues: initialValue,
+    validationSchema:schema,
     onSubmit: handleFormSubmit,
   });
-
-  const handleTypeChange2 = (selectedOption) => {
-    setSelectedType2(selectedOption?.value);
-    formik.setFieldValue("type", selectedOption?.value);
-  };
 
   const handleOpen = async (id) => {
     setOpen(true);
@@ -127,7 +128,7 @@ const Blog = () => {
       formik.setFieldValue("id", result.id);
       formik.setFieldValue("heading", result.heading);
       formik.setFieldValue("description", result.description);
-      formik.setFieldValue("photo", result.photo);
+      formik.setFieldValue("file", result.photo);
       formik.setFieldValue("link", result.link);
       setImage(result.image);
     } else {
@@ -135,8 +136,13 @@ const Blog = () => {
       formik.setFieldValue("heading", "");
       formik.setFieldValue("description", "");
       formik.setFieldValue("link", "");
-      formik.setFieldValue("photo", "");
+      formik.setFieldValue("file", "");
     }
+  };
+
+  const DeleteBlog = (id) => {
+    setOpenDelete(!openDelete);
+    setDeleteId(id);
   };
 
   const columns = [
@@ -146,7 +152,7 @@ const Blog = () => {
       sortable: true,
     },
     {
-      email: <b>Description</b>,
+      name: <b>Description</b>,
       selector: (row) => row.description,
       sortable: true,
     },
@@ -157,21 +163,34 @@ const Blog = () => {
     },
     {
       name: <b>Photo</b>,
-      selector: (row) => <img src={row.photo} alt="" style={{objectFit:"cover", margin:5}} width="100" height="80" />,
+      selector: (row) => (
+        <img
+          src={row.photo}
+          alt=""
+          style={{ objectFit: "cover", margin: 5 }}
+          width="100"
+          height="80"
+        />
+      ),
       sortable: true,
     },
     {
       name: <b>Action</b>,
-      selector: (row) => (<>
-        <div>
-          <Button className="btn-primary" onClick={() => handleOpen(row.id)}>
-          <i className="fas fa-edit"></i>
-          </Button>
-          <Button className="ms-2 btn-danger">
-            <i className="fas fa-trash"></i>
-          </Button>
-        </div>
-      </>),
+      selector: (row) => (
+        <>
+          <div>
+            <Button className="btn-primary" onClick={() => handleOpen(row.id)}>
+              <i className="fas fa-edit"></i>
+            </Button>
+            <Button
+              className="ms-2 btn-danger"
+              onClick={() => DeleteBlog(row.id)}
+            >
+              <i className="fas fa-trash"></i>
+            </Button>
+          </div>
+        </>
+      ),
       sortable: true,
     },
   ];
@@ -199,13 +218,18 @@ const Blog = () => {
           options={options2}
           image={image}
           selectedOption2={selectedOption}
-          handleTypeChange2={handleTypeChange2}
           loading={loader}
         />
       </div>
       <div className="row">
         <UserTable name="blog" columns={columns} data={data} />
       </div>
+      <DeleteImagesModal
+        show={openDelete}
+        onHide={handleCloseDelete}
+        card={deleteId}
+        getAllPage={getAllPage}
+      />
     </>
   );
 };

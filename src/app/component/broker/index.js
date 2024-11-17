@@ -1,32 +1,30 @@
 /* eslint-disable  no-unused-vars */
 import React from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import comminitiesSevice from "../../services/blog.service";
-import { AddPage, DeleteImages } from "./modalCommunities";
-import Select from "react-select";
-import pageTypeSevice from "../../services/pageType.service";
+import { AddPage, DeleteImages, DeleteImagesModal } from "./modalCommunities";
 import { useFormik } from "formik";
-import * as yup from "yup";
 import withLoader from "../../layout/loader/withLoader";
 import UserTable from "./userTable";
-import moment from "moment";
-import blogSevice from "../../services/blog.service";
+import * as yup from 'yup';
 import BrokerSevice from "../../services/broker.service";
 
 const Broker = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(1)
   const [listof, setListof] = useState([]);
   const [selectedType, setSelectedType] = useState("");
   const [idListOfData, setIdListOfData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleCloseDelete = () => setOpenDelete(false);
   const [update, setUpdate] = useState("");
   const [loader, setLoader] = useState(false);
   const [selectedType2, setSelectedType2] = useState("");
+  const [deleteId, setDeleteId] = useState("");
   const [image, setImage] = useState("");
 
   const getAllPage = async () => {
@@ -56,10 +54,6 @@ const Broker = () => {
     })),
   ];
 
-  const selectedOption = options.find(
-    (option) => option.value === Object(idListOfData)
-  );
-
   const initialValue = {
     heading:"",
     link: "",
@@ -81,7 +75,7 @@ const Broker = () => {
         handleClose();
         action.resetForm();
       } catch (e) {
-        console.log("add Communities error", e);
+        console.log("error", e);
       }
     } else {
       try {
@@ -101,38 +95,42 @@ const Broker = () => {
         getAllPage();
         action.resetForm();
       } catch (e) {
-        console.log("update page error", e);
+        console.log("update error", e);
       }
     }
   };
-
+  const schema = yup.object().shape({
+    heading: yup.string().required("Heading is required"),
+    link: yup.string().required("Link is required")
+  });
   const formik = useFormik({
     initialValues: initialValue,
+    validationSchema:schema,
     onSubmit: handleFormSubmit,
   });
-
-  const handleTypeChange2 = (selectedOption) => {
-    setSelectedType2(selectedOption?.value);
-    formik.setFieldValue("type", selectedOption?.value);
-  };
 
   const handleOpen = async (id) => {
     setOpen(true);
     if (id !== "") {
       setUpdate(true);
       const response = await BrokerSevice.getBrokerByID(id);
-      const result = response.data;
+      const result = response.data.apiresponse.data;
       formik.setFieldValue("id", result.id);
       formik.setFieldValue("heading", result.heading);
-      formik.setFieldValue("photo", result.photo);
+      formik.setFieldValue("file", result.photo);
       formik.setFieldValue("link", result.link);
       setImage(result.image);
     } else {
       setUpdate(false);
       formik.setFieldValue("heading", "");
       formik.setFieldValue("link", "");
-      formik.setFieldValue("photo", "");
+      formik.setFieldValue("file", "");
     }
+  };
+
+  const DeleteBlog = (id) => {
+    setOpenDelete(!openDelete);
+    setDeleteId(id);
   };
 
   const columns = [
@@ -158,7 +156,7 @@ const Broker = () => {
           <Button className="btn-primary" onClick={() => handleOpen(row.id)}>
           <i className="fas fa-edit"></i>
           </Button>
-          <Button className="ms-2 btn-danger">
+          <Button className="ms-2 btn-danger" onClick={() => DeleteBlog(row.id)}>
             <i className="fas fa-trash"></i>
           </Button>
         </div>
@@ -189,14 +187,18 @@ const Broker = () => {
           formik={formik}
           options={options2}
           image={image}
-          selectedOption2={selectedOption}
-          handleTypeChange2={handleTypeChange2}
           loading={loader}
         />
       </div>
       <div className="row">
         <UserTable name="broker" columns={columns} data={data} />
       </div>
+      <DeleteImagesModal
+        show={openDelete}
+        onHide={handleCloseDelete}
+        card={deleteId}
+        getAllPage={getAllPage}
+      />
     </>
   );
 };

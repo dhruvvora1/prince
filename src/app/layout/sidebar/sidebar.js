@@ -152,24 +152,6 @@ const SideBar = () => {
               className="hor-scroll"
               style={{ position: "absolute" }}
             >
-              {/* <div className="sidemenu-logo">
-                <Link
-                  className="main-logo"
-                  to={`${process.env.REACT_APP_HOME_PAGE}dashboard/`}
-                >
-                  <img
-                    src={require("../../../assets/img/brand/logo-light.png")}
-                    className="header-brand-img desktop-logo"
-                    alt={"logo1"}
-                  />
-
-                  <img
-                    src={require("../../../assets/img/brand/icon-light.png")}
-                    className="header-brand-img icon-logo"
-                    alt={"logo-2"}
-                  />
-                </Link>
-              </div> */}
               <div
                 className="main-body-1 main-sidebar-body"
                 onMouseOver={() => Onhover()}

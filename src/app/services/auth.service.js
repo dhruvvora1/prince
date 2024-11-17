@@ -16,8 +16,14 @@ const signUp = (userSignInRequest) => {
     });
 };
 
+const Dashboard = () => {
+  const response = serverCall.get(`/dashboard/total`);
+  return response;
+};
+
 const AuthenticationService = {
   signUp,
+  Dashboard
 };
 
 export default AuthenticationService;

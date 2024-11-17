@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { Card } from "react-bootstrap";
 
 function UserTable({name, columns, data}) {
+  const id = useParams();
 
   const tableData = {
     columns,

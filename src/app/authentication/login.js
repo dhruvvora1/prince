@@ -37,6 +37,7 @@ const SignIn = () => {
       enqueueSnackbar("Invalid credentials ", { variant: "error" });
     }
   };
+  
   const initialValue = {
     email: "",
     password: "",
@@ -128,11 +129,6 @@ const SignIn = () => {
                               Sign In
                             </Button>
                           </form>
-                          <div className="text-start mt-5 ms-0">
-                            <div className="mb-1">
-                              <Link to="#"> Forgot password ?</Link>
-                            </div>
-                          </div>
                         </Card.Body>
                       </Row>
                     </Container>

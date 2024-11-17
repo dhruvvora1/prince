@@ -1,7 +1,7 @@
 import serverCall from "../../serverCall";
 
 const Create = async (create) => {
-  const response = await serverCall.post(`/learning`, create);
+  const response = await serverCall.post(`/learning/`, create);
   return response;
 };
 const GetList = (page, size) => {
@@ -10,17 +10,17 @@ const GetList = (page, size) => {
 };
 
 const GetListByID = (id) => {
-  const response = serverCall.get(`/learning?id=${id}`);
+  const response = serverCall.get(`/learning/${id}`);
   return response;
 };
 
-const Update = (id) => {
-  const response = serverCall.get(`/learning?id=${id}`);
+const Update = (data) => {
+  const response = serverCall.post(`/learning/update`, data);
   return response;
 };
 
 const Delete = (id) => {
-  const response = serverCall.delete(`/learning?id=${id}`);
+  const response = serverCall.delete(`/learning/${id}`);
   return response;
 };
 

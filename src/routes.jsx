@@ -1,20 +1,19 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import AuthLogin from "./app/authentication/login";
 import MatxLayout from "./app/component/maxLayout";
 import NotFound from "./app/layout/sessions/NotFound";
-// import { Suspense } from "react";
-// import Loader from "./app/layout/loader/loader";
-
-import PageType from "./app/component/dashboard";
-import Comminities from "./app/component/blog/index";
-import Page from "./app/component/page/index";
-import UserTable from "./app/component/blog/userTable";
-import DetailsTable from "./app/component/page/pageDetailTable";
-import FeedDetailPage from "./app/component/page/feedpage";
-import Blog from "./app/component/blog/index";
-import Learning from "./app/component/learning";
-import Broker from "./app/component/broker";
+const PageType = lazy(() => import("./app/component/dashboard/index"));
+const Blog = lazy(() => import("./app/component/blog/index"));
+const Learning = lazy(() => import("./app/component/learning"));
+const Broker = lazy(() => import("./app/component/broker"));
+const Intraday = lazy(() => import("./app/component/Intraday"));
+const FoStocks = lazy(() => import("./app/component/F&O/index"));
+const Yearly = lazy(() => import("./app/component/Yearly"));
+const Monthly = lazy(() => import("./app/component/Monthly"));
+const Weekly = lazy(() => import("./app/component/Weekly"));
+const Daily = lazy(() => import("./app/component/Daily"));
+const Notification = lazy(() => import("./app/component/Notification"));
 
 function RedirectionWrapper({ to }) {
   const queryString = window.location.search;
@@ -50,16 +49,32 @@ const routes = (isLoggedIn) => [
         element: <Learning />,
       },
       {
-        path: "/page/",
-        element: <Page />,
+        path: "/intraday",
+        element: <Intraday />,
       },
       {
-        path: "/pagedeatils/:id",
-        element: <DetailsTable />,
+        path: "/fostocks",
+        element: <FoStocks />,
       },
       {
-        path: "/feeddetail/:id",
-        element: <FeedDetailPage />,
+        path: "/yearly",
+        element: <Yearly />,
+      },
+      {
+        path: "/monthly",
+        element: <Monthly />,
+      },
+      {
+        path: "/weekly",
+        element: <Weekly />,
+      },
+      {
+        path: "/daily",
+        element: <Daily />,
+      },
+      {
+        path: "/notification",
+        element: <Notification />,
       },
     ],
   },

@@ -18,8 +18,8 @@ const requestHandler = (request) => {
 
 const responseHandler = (response) => {
   if (response.status === 401 || response.status === 403) {
-    // window.location = "/";
-    // localStorage.removeItem("token");
+    window.location = "/";
+    localStorage.removeItem("token");
   }
   return response;
 };
@@ -31,10 +31,10 @@ const requestErrorHandler = (error) => {
 const responseErrorHandler = (error) => {
   if (error.response) {
     if (error.response.status === 401 || error.response.status === 403) {
-      // localStorage.removeItem("token");
-      // localStorage.clear();
-      // window.location = "/";
-      // return Promise.reject(error);
+      localStorage.removeItem("token");
+      localStorage.clear();
+      window.location = "/";
+      return Promise.reject(error);
     }
   }
   return Promise.reject(error);

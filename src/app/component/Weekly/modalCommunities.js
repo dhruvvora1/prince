@@ -1,10 +1,13 @@
-import { Fragment, useEffect } from "react";
-import { useState } from "react";
+import { Fragment } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import Select from "react-select";
 import comminitiesSevice from "../../services/blog.service";
 import { CircularProgress } from "@mui/material";
-import learningSevice from "../../services/learning.service";
+import Multiyearevice from "../../services/intraday.service";
+import moment from "moment";
+import Monthlyevice from "../../services/monthly.service";
+import Weeklyevice from "../../services/weekly.service";
 
 export function AddPage(props) {
   const {formik} = props
@@ -45,7 +48,7 @@ export function AddPage(props) {
             <div className="card custom-card">
               <form onSubmit={formik.handleSubmit}>
                 <h4>
-                  {props.update ? "Update Learning" : "Add Learning"}
+                  {props.update ? "Update Weekly" : "Add Weekly"}
                 </h4>
                 <div className="col-12">
                   <Form.Group
@@ -59,19 +62,19 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Heading: <span className="tx-danger">*</span>
+                      Title: <span className="tx-danger">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      name="heading"
-                      placeholder="Heading"
-                      value={formik.values.heading}
+                      name="title"
+                      placeholder="Title"
+                      value={formik.values.title}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.heading && formik.touched.heading ? (
+                    {formik.errors.title && formik.touched.title ? (
                       <p className="text-start error">
                         {" "}
-                        {formik.errors.heading}
+                        {formik.errors.title}
                       </p>
                     ) : null}
                   </Form.Group>
@@ -117,19 +120,77 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Link: <span className="tx-danger">*</span>
+                      level: <span className="tx-danger">*</span>
                     </Form.Label>
                     <Form.Control
                       type="text"
-                      name="link"
-                      placeholder="Link"
-                      value={formik.values.link}
+                      name="level"
+                      placeholder="Level"
+                      value={formik.values.level}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.link && formik.touched.link ? (
+                    {formik.errors.name && formik.touched.name ? (
                       <p className="text-start error">
                         {" "}
-                        {formik.errors.link}
+                        {formik.errors.name}
+                      </p>
+                    ) : null}
+                  </Form.Group>
+                </div>
+                <div className="col-12">
+                  <Form.Group
+                    controlid="validationFormik101"
+                    className="position-relative"
+                  >
+                    <Form.Label
+                      style={{
+                        textAlign: "start",
+                        color: "#000",
+                        marginTop: "15px",
+                      }}
+                    >
+                      Pattern: <span className="tx-danger">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="pattern"
+                      placeholder="Pattern"
+                      value={formik.values.pattern}
+                      onChange={formik.handleChange}
+                    />
+                    {formik.errors.name && formik.touched.name ? (
+                      <p className="text-start error">
+                        {" "}
+                        {formik.errors.name}
+                      </p>
+                    ) : null}
+                  </Form.Group>
+                </div>
+                <div className="col-12">
+                  <Form.Group
+                    controlid="validationFormik101"
+                    className="position-relative"
+                  >
+                    <Form.Label
+                      style={{
+                        textAlign: "start",
+                        color: "#000",
+                        marginTop: "15px",
+                      }}
+                    >
+                      Date: <span className="tx-danger">*</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      name="date"
+                      placeholder="Pattern"
+                      value={moment(formik.values.date).format("YYYY-MM-DD")}
+                      onChange={props.handleChangeDate}
+                    />
+                    {formik.errors.name && formik.touched.name ? (
+                      <p className="text-start error">
+                        {" "}
+                        {formik.errors.name}
                       </p>
                     ) : null}
                   </Form.Group>
@@ -223,9 +284,9 @@ export function AddPage(props) {
 export function DeleteImagesModal(props) {
   const { card } = props;
   const DeleteImages = async () => {
-    await learningSevice.Delete(card);
-    props.onHide();
+    await Weeklyevice.Delete(card);
     props.getAllPage();
+    props.onHide()
   };
 
   return (

@@ -1,10 +1,8 @@
 /* eslint-disable  no-unused-vars */
 import React from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import comminitiesSevice from "../../services/blog.service";
 import { AddPage, DeleteImages, DeleteImagesModal } from "./modalCommunities";
 import Select from "react-select";
 import pageTypeSevice from "../../services/Dashboard.service";
@@ -13,29 +11,26 @@ import * as yup from "yup";
 import withLoader from "../../layout/loader/withLoader";
 import UserTable from "./userTable";
 import moment from "moment";
-import learningSevice from "../../services/learning.service";
+import Multiyearevice from "../../services/multiyear.service";
 
-const Blog = () => {
+const Yearly = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [listof, setListof] = useState([]);
   const [idListOfData, setIdListOfData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleCloseDelete = () => setOpenDelete(false);
   const [update, setUpdate] = useState("");
   const [loader, setLoader] = useState(false);
   const [selectedType2, setSelectedType2] = useState("");
   const [image, setImage] = useState("");
-  const [openDelete, setOpenDelete] = useState(false);
-  const handleCloseDelete = () => setOpenDelete(false);
   const [deleteId, setDeleteId] = useState("");
 
   const getAllPage = async () => {
-    const response = await learningSevice.GetList(
-      page+1,
-      10
-    );
-    setData(response.data.apiresponse.data.learning);
+    const response = await Multiyearevice.GetList(page + 1, 10);
+    setData(response.data.apiresponse.data.multiyear);
   };
 
   useEffect(() => {
@@ -62,29 +57,32 @@ const Blog = () => {
   );
 
   const initialValue = {
-    heading:"",
+    heading: "",
     description: "",
-    link: "",
+    level: "",
+    pattern: "",
+    date: "",
     file: null,
   };
 
-  const schema = yup.object().shape({
-    heading: yup.string().required("Heading is required"),
-    description: yup.string().required("Description is required"),
-    link: yup.string().required("Link is required")
-  });
+  const handleChangeDate = (e) => {
+    const newDate = new Date(e.target.value).getTime();
+    formik.setFieldValue("date", newDate);
+  };
 
   const handleFormSubmit = async (values, action) => {
     if (!values.id) {
       try {
-        const { file, heading, link, description } = values;
+        const { file, heading, level, pattern, date, description } = values;
         const editdata = new FormData();
         editdata.append("photo", file);
-        editdata.append("heading", heading);
+        editdata.append("title", heading);
         editdata.append("description", description);
-        editdata.append("link", link);
+        editdata.append("level", level);
+        editdata.append("pattern", pattern);
+        editdata.append("date", date);
         setLoader(true);
-        await learningSevice.Create(editdata);
+        await Multiyearevice.Create(editdata);
         setLoader(false);
         getAllPage();
         handleClose();
@@ -95,17 +93,19 @@ const Blog = () => {
     } else {
       try {
         const id = values.id;
-        const { file, heading, link, description } = values;
+        const { file, heading, level, pattern, date, description } = values;
         const editData = new FormData();
         editData.append("id", id);
-        editData.append("heading", heading);
+        editData.append("title", heading);
         editData.append("description", description);
-        editData.append("link", link);
+        editData.append("level", level);
+        editData.append("pattern", pattern);
+        editData.append("date", date);
         if (file) {
           editData.append("photo", file);
         }
         setLoader(true);
-        await learningSevice.Update(editData);
+        await Multiyearevice.Update(editData);
         setLoader(false);
         handleClose();
         getAllPage();
@@ -116,33 +116,24 @@ const Blog = () => {
     }
   };
 
-  const DeleteBlog = (id) => {
-    setOpenDelete(!openDelete);
-    setDeleteId(id);
-  };
-
   const formik = useFormik({
     initialValues: initialValue,
-    validationSchema:schema,
     onSubmit: handleFormSubmit,
   });
-
-  const handleTypeChange2 = (selectedOption) => {
-    setSelectedType2(selectedOption?.value);
-    formik.setFieldValue("type", selectedOption?.value);
-  };
 
   const handleOpen = async (id) => {
     setOpen(true);
     if (id !== "") {
       setUpdate(true);
-      const response = await learningSevice.GetListByID(id);
+      const response = await Multiyearevice.GetListByID(id);
       const result = response.data.apiresponse.data;
       formik.setFieldValue("id", result.id);
-      formik.setFieldValue("heading", result.heading);
+      formik.setFieldValue("heading", result.title);
       formik.setFieldValue("description", result.description);
       formik.setFieldValue("file", result.photo);
-      formik.setFieldValue("link", result.link);
+      formik.setFieldValue("level", result.level);
+      formik.setFieldValue("pattern", result.pattern);
+      formik.setFieldValue("date", result.date);
       setImage(result.image);
     } else {
       setUpdate(false);
@@ -153,10 +144,15 @@ const Blog = () => {
     }
   };
 
+  const DeleteBlog = (id) => {
+    setOpenDelete(!openDelete);
+    setDeleteId(id);
+  };
+
   const columns = [
     {
       name: <b>Heading</b>,
-      selector: (row) => row.heading,
+      selector: (row) => row.title,
       sortable: true,
     },
     {
@@ -171,21 +167,34 @@ const Blog = () => {
     },
     {
       name: <b>Photo</b>,
-      selector: (row) => <img src={row.photo} alt="" style={{objectFit:"cover", margin:5}} width="100" height="80" />,
+      selector: (row) => (
+        <img
+          src={row.photo}
+          alt=""
+          style={{ objectFit: "cover", margin: 5 }}
+          width="100"
+          height="80"
+        />
+      ),
       sortable: true,
     },
     {
       name: <b>Action</b>,
-      selector: (row) => (<>
-        <div>
-          <Button className="btn-primary" onClick={() => handleOpen(row.id)}>
-          <i className="fas fa-edit"></i>
-          </Button>
-          <Button className="ms-2 btn-danger" onClick={() => DeleteBlog(row.id)}>
-            <i className="fas fa-trash"></i>
-          </Button>
-        </div>
-      </>),
+      selector: (row) => (
+        <>
+          <div>
+            <Button className="btn-primary" onClick={() => handleOpen(row.id)}>
+              <i className="fas fa-edit"></i>
+            </Button>
+            <Button
+              className="ms-2 btn-danger"
+              onClick={() => DeleteBlog(row.id)}
+            >
+              <i className="fas fa-trash"></i>
+            </Button>
+          </div>
+        </>
+      ),
       sortable: true,
     },
   ];
@@ -194,7 +203,7 @@ const Blog = () => {
     <>
       <div className="page-header2"></div>
       <div className="d-flex">
-        <div className="mb-4 main-content-label tx-24">All Learning</div>
+        <div className="mb-4 main-content-label tx-24">All Yearly</div>
         <div className="ms-auto me-4 d-flex">
           <button
             className="text-white btn btn-primary ms-auto mb-4"
@@ -213,12 +222,12 @@ const Blog = () => {
           options={options2}
           image={image}
           selectedOption2={selectedOption}
-          handleTypeChange2={handleTypeChange2}
           loading={loader}
+          handleChangeDate={handleChangeDate}
         />
       </div>
       <div className="row">
-        <UserTable name="learning" columns={columns} data={data} />
+        <UserTable name="yearly" columns={columns} data={data} />
       </div>
       <DeleteImagesModal
         show={openDelete}
@@ -230,4 +239,4 @@ const Blog = () => {
   );
 };
 
-export default withLoader(Blog);
+export default withLoader(Yearly);

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "http://88.222.215.50/static/css/main.d1bd9dd2.css",
-    "main.js": "http://88.222.215.50/static/js/main.44f96f57.js",
+    "main.js": "http://88.222.215.50/static/js/main.92b9297a.js",
     "static/js/264.39b30115.chunk.js": "http://88.222.215.50/static/js/264.39b30115.chunk.js",
     "static/css/51.54502983.chunk.css": "http://88.222.215.50/static/css/51.54502983.chunk.css",
     "static/js/51.a382f6a9.chunk.js": "http://88.222.215.50/static/js/51.a382f6a9.chunk.js",
@@ -24,7 +24,7 @@
     "static/css/430.54502983.chunk.css": "http://88.222.215.50/static/css/430.54502983.chunk.css",
     "static/js/430.c787bd87.chunk.js": "http://88.222.215.50/static/js/430.c787bd87.chunk.js",
     "static/js/787.ec3be5a0.chunk.js": "http://88.222.215.50/static/js/787.ec3be5a0.chunk.js",
-    "static/js/774.dc19fda0.chunk.js": "http://88.222.215.50/static/js/774.dc19fda0.chunk.js",
+    "static/js/774.7749a60a.chunk.js": "http://88.222.215.50/static/js/774.7749a60a.chunk.js",
     "static/media/materialdesignicons-webfont.svg?": "http://88.222.215.50/static/media/materialdesignicons-webfont.3bc134ab46073ceeec53.svg",
     "static/media/fa-solid-900.svg": "http://88.222.215.50/static/media/fa-solid-900.e15864144b9712e2ef72.svg",
     "static/media/fa-brands-400.svg": "http://88.222.215.50/static/media/fa-brands-400.405bd81e7c54fd4008bf.svg",
@@ -103,7 +103,7 @@
     "static/media/user.svg": "http://88.222.215.50/static/media/user.78cb5a6dbefbc209dec8d3b91fb9d091.svg",
     "index.html": "http://88.222.215.50/index.html",
     "main.d1bd9dd2.css.map": "http://88.222.215.50/static/css/main.d1bd9dd2.css.map",
-    "main.44f96f57.js.map": "http://88.222.215.50/static/js/main.44f96f57.js.map",
+    "main.92b9297a.js.map": "http://88.222.215.50/static/js/main.92b9297a.js.map",
     "264.39b30115.chunk.js.map": "http://88.222.215.50/static/js/264.39b30115.chunk.js.map",
     "51.54502983.chunk.css.map": "http://88.222.215.50/static/css/51.54502983.chunk.css.map",
     "51.a382f6a9.chunk.js.map": "http://88.222.215.50/static/js/51.a382f6a9.chunk.js.map",
@@ -126,10 +126,10 @@
     "430.54502983.chunk.css.map": "http://88.222.215.50/static/css/430.54502983.chunk.css.map",
     "430.c787bd87.chunk.js.map": "http://88.222.215.50/static/js/430.c787bd87.chunk.js.map",
     "787.ec3be5a0.chunk.js.map": "http://88.222.215.50/static/js/787.ec3be5a0.chunk.js.map",
-    "774.dc19fda0.chunk.js.map": "http://88.222.215.50/static/js/774.dc19fda0.chunk.js.map"
+    "774.7749a60a.chunk.js.map": "http://88.222.215.50/static/js/774.7749a60a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d1bd9dd2.css",
-    "static/js/main.44f96f57.js"
+    "static/js/main.92b9297a.js"
   ]
 }

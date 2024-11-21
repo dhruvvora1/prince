@@ -59,6 +59,7 @@ const Daily = () => {
     description: "",
     level: "",
     pattern: "",
+    link:"",
     date: "",
     file: null,
   };
@@ -71,12 +72,13 @@ const Daily = () => {
   const handleFormSubmit = async (values, action) => {
     if (!values.id) {
       try {
-        const { file, title, level, pattern, date, description } = values;
+        const { file, title, level, pattern, date, description, link } = values;
         const editdata = new FormData();
         editdata.append("photo", file);
         editdata.append("title", title);
         editdata.append("description", description);
         editdata.append("level", level);
+        editdata.append("link", link);
         editdata.append("pattern", pattern);
         editdata.append("date", date);
         setLoader(true);
@@ -91,12 +93,13 @@ const Daily = () => {
     } else {
       try {
         const id = values.id;
-        const { file, title, level, pattern, date, description } = values;
+        const { file, title, level, pattern, date, description,link } = values;
         const editData = new FormData();
         editData.append("id", id);
         editData.append("title", title);
         editData.append("description", description);
         editData.append("level", level);
+        editData.append("link", link);
         editData.append("pattern", pattern);
         editData.append("date", date);
         if (file) {
@@ -133,6 +136,7 @@ const Daily = () => {
       formik.setFieldValue("id", result.id);
       formik.setFieldValue("title", result.title);
       formik.setFieldValue("description", result.description);
+      formik.setFieldValue("link", result.link);
       formik.setFieldValue("file", result.photo);
       formik.setFieldValue("level", result.level);
       formik.setFieldValue("pattern", result.pattern);

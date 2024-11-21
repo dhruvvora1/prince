@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { Dropdown, Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import Searchable from "react-searchable-dropdown";
 
 function Fullscreen() {
   if (

@@ -1,8 +1,6 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import Select from "react-select";
-import comminitiesSevice from "../../services/blog.service";
 import { CircularProgress } from "@mui/material";
 import learningSevice from "../../services/learning.service";
 

@@ -1,8 +1,5 @@
-import { Fragment } from "react";
 import { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import Select from "react-select";
-import comminitiesSevice from "../../services/blog.service";
 import { CircularProgress } from "@mui/material";
 import Multiyearevice from "../../services/intraday.service";
 import moment from "moment";

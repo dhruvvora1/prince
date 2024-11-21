@@ -58,6 +58,7 @@ const Notification = () => {
     description: "",
     level: "",
     pattern: "",
+    link:"",
     date: "",
     file: null,
   };
@@ -70,12 +71,13 @@ const Notification = () => {
   const handleFormSubmit = async (values, action) => {
     if (!values.id) {
       try {
-        const { file, heading, level, pattern, date, description } = values;
+        const { file, heading, level, pattern, date, description, link } = values;
         const editdata = new FormData();
         editdata.append("photo", file);
         editdata.append("title", heading);
         editdata.append("description", description);
         editdata.append("level", level);
+        editdata.append("link", link);
         editdata.append("pattern", pattern);
         editdata.append("date", date);
         setLoader(true);
@@ -90,12 +92,13 @@ const Notification = () => {
     } else {
       try {
         const id = values.id;
-        const { file, heading, level, pattern, date, description } = values;
+        const { file, heading, level, pattern, date, description, link } = values;
         const editData = new FormData();
         editData.append("id", id);
         editData.append("title", heading);
         editData.append("description", description);
         editData.append("level", level);
+        editData.append("link", link);
         editData.append("pattern", pattern);
         editData.append("date", date);
         if (file) {
@@ -129,6 +132,7 @@ const Notification = () => {
       formik.setFieldValue("description", result.description);
       formik.setFieldValue("file", result.photo);
       formik.setFieldValue("level", result.level);
+      formik.setFieldValue("link", result.link);
       formik.setFieldValue("pattern", result.pattern);
       formik.setFieldValue("date", result.date);
       setImage(result.image);

@@ -6,7 +6,6 @@ import AuthenticationService from "../../services/auth.service";
 
 const PageType = () => {
   const [data, setData] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
 
   const getAllPageList = async (list) => {
     const response = await AuthenticationService.Dashboard();

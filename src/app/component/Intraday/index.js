@@ -56,6 +56,7 @@ const Intraday = () => {
   const initialValue = {
     heading: "",
     description: "",
+    link:"",
     level: "",
     pattern: "",
     date: "",
@@ -70,7 +71,7 @@ const Intraday = () => {
   const handleFormSubmit = async (values, action) => {
     if (!values.id) {
       try {
-        const { file, heading, level, pattern, date, description } = values;
+        const { file, heading, level, pattern, date, description, link } = values;
         const editdata = new FormData();
         editdata.append("photo", file);
         editdata.append("title", heading);
@@ -78,6 +79,7 @@ const Intraday = () => {
         editdata.append("level", level);
         editdata.append("pattern", pattern);
         editdata.append("date", date);
+        editdata.append("link", link);
         setLoader(true);
         await IntradaySevice.Create(editdata);
         setLoader(false);
@@ -90,7 +92,7 @@ const Intraday = () => {
     } else {
       try {
         const id = values.id;
-        const { file, heading, level, pattern, date, description } = values;
+        const { file, heading, level, pattern, date, description, link } = values;
         const editData = new FormData();
         editData.append("id", id);
         editData.append("title", heading);
@@ -98,6 +100,7 @@ const Intraday = () => {
         editData.append("level", level);
         editData.append("pattern", pattern);
         editData.append("date", date);
+        editData.append("link", link);
         if (file) {
           editData.append("photo", file);
         }
@@ -130,9 +133,11 @@ const Intraday = () => {
       formik.setFieldValue("file", result.photo);
       formik.setFieldValue("level", result.level);
       formik.setFieldValue("pattern", result.pattern);
+      formik.setFieldValue("link", result.link);
       setImage(result.image);
     } else {
       setUpdate(false);
+      formik.setFieldValue("link", "");
       formik.setFieldValue("heading", "");
       formik.setFieldValue("description", "");
       formik.setFieldValue("link", "");
@@ -148,7 +153,7 @@ const Intraday = () => {
   const columns = [
     {
       name: <b>Heading</b>,
-      selector: (row) => row.heading,
+      selector: (row) => row.title,
       sortable: true,
     },
     {

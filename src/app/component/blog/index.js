@@ -1,18 +1,13 @@
 /* eslint-disable  no-unused-vars */
 import React from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import comminitiesSevice from "../../services/blog.service";
-import { AddPage, DeleteImages, DeleteImagesModal } from "./modalCommunities";
-import Select from "react-select";
-import pageTypeSevice from "../../services/Dashboard.service";
+import { AddPage, DeleteImagesModal } from "./modalCommunities";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import withLoader from "../../layout/loader/withLoader";
 import UserTable from "./userTable";
-import moment from "moment";
 import blogSevice from "../../services/blog.service";
 
 const Blog = () => {

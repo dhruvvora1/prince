@@ -84,7 +84,7 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Description: <span className="tx-danger">*</span>
+                      Description:
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -93,12 +93,6 @@ export function AddPage(props) {
                       value={formik.values.description}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.description && formik.touched.description ? (
-                      <p className="text-start error">
-                        {" "}
-                        {formik.errors.description}
-                      </p>
-                    ) : null}
                   </Form.Group>
                 </div>
                 <div className="col-12">
@@ -113,7 +107,30 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      level: <span className="tx-danger">*</span>
+                      Link:
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="link"
+                      placeholder="Link"
+                      value={formik.values.link}
+                      onChange={formik.handleChange}
+                    />
+                  </Form.Group>
+                </div>
+                <div className="col-12">
+                  <Form.Group
+                    controlid="validationFormik101"
+                    className="position-relative"
+                  >
+                    <Form.Label
+                      style={{
+                        textAlign: "start",
+                        color: "#000",
+                        marginTop: "15px",
+                      }}
+                    >
+                      level: 
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -122,9 +139,6 @@ export function AddPage(props) {
                       value={formik.values.level}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.name && formik.touched.name ? (
-                      <p className="text-start error"> {formik.errors.name}</p>
-                    ) : null}
                   </Form.Group>
                 </div>
                 <div className="col-12">
@@ -139,7 +153,7 @@ export function AddPage(props) {
                         marginTop: "15px",
                       }}
                     >
-                      Pattern: <span className="tx-danger">*</span>
+                      Pattern: 
                     </Form.Label>
                     <Form.Control
                       type="text"
@@ -148,9 +162,6 @@ export function AddPage(props) {
                       value={formik.values.pattern}
                       onChange={formik.handleChange}
                     />
-                    {formik.errors.name && formik.touched.name ? (
-                      <p className="text-start error"> {formik.errors.name}</p>
-                    ) : null}
                   </Form.Group>
                 </div>
                 <div className="col-12">
@@ -174,9 +185,6 @@ export function AddPage(props) {
                       value={moment(formik.values.date).format("YYYY-MM-DD")}
                       onChange={props.handleChangeDate}
                     />
-                    {formik.errors.name && formik.touched.name ? (
-                      <p className="text-start error"> {formik.errors.name}</p>
-                    ) : null}
                   </Form.Group>
                 </div>
                 <Form.Group className="position-relative col-12">

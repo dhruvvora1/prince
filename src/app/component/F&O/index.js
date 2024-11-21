@@ -3,9 +3,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
-import { AddPage, DeleteImages, DeleteImagesModal } from "./modalCommunities";
-import Select from "react-select";
-import pageTypeSevice from "../../services/Dashboard.service";
+import { AddPage, DeleteImagesModal } from "./modalCommunities";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import withLoader from "../../layout/loader/withLoader";
@@ -16,15 +14,12 @@ import FOStockSevice from "../../services/fostock.service";
 const FoStocks = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
-  const [listof, setListof] = useState([]);
-  const [idListOfData, setIdListOfData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [openDelete, setOpenDelete] = useState(false);
   const handleCloseDelete = () => setOpenDelete(false);
   const [update, setUpdate] = useState("");
   const [loader, setLoader] = useState(false);
-  const [selectedType2, setSelectedType2] = useState("");
   const [image, setImage] = useState("");
   const [deleteId, setDeleteId] = useState("");
 
@@ -37,31 +32,13 @@ const FoStocks = () => {
     getAllPage();
   }, []);
 
-  const options = [
-    { value: " ", label: "All" },
-    ...listof.map((item, index) => ({
-      value: idListOfData[index],
-      label: item,
-    })),
-  ];
-
-  const options2 = [
-    ...listof.map((item, index) => ({
-      value: idListOfData[index],
-      label: item,
-    })),
-  ];
-
-  const selectedOption = options.find(
-    (option) => option.value === Object(idListOfData)
-  );
-
   const initialValue = {
     heading: "",
     description: "",
     level: "",
     pattern: "",
     date: "",
+    link:"",
     file: null,
   };
 
@@ -73,13 +50,14 @@ const FoStocks = () => {
   const handleFormSubmit = async (values, action) => {
     if (!values.id) {
       try {
-        const { file, heading, level, pattern, date, description } = values;
+        const { file, heading, level, pattern, date, description,link } = values;
         const editdata = new FormData();
         editdata.append("photo", file);
         editdata.append("title", heading);
         editdata.append("description", description);
         editdata.append("level", level);
         editdata.append("pattern", pattern);
+        editdata.append("link", link);
         editdata.append("date", date);
         setLoader(true);
         await FOStockSevice.Create(editdata);
@@ -93,12 +71,13 @@ const FoStocks = () => {
     } else {
       try {
         const id = values.id;
-        const { file, heading, level, pattern, date, description } = values;
+        const { file, heading, level, pattern, date, description,link } = values;
         const editData = new FormData();
         editData.append("id", id);
         editData.append("title", heading);
         editData.append("description", description);
         editData.append("level", level);
+        editData.append("link", link);
         editData.append("pattern", pattern);
         editData.append("date", date);
         if (file) {
@@ -131,6 +110,7 @@ const FoStocks = () => {
       formik.setFieldValue("heading", result.title);
       formik.setFieldValue("description", result.description);
       formik.setFieldValue("file", result.photo);
+      formik.setFieldValue("link", result.link);
       formik.setFieldValue("level", result.level);
       formik.setFieldValue("pattern", result.pattern);
       setImage(result.image);
@@ -218,9 +198,7 @@ const FoStocks = () => {
           onHide={handleClose}
           update={update}
           formik={formik}
-          options={options2}
           image={image}
-          selectedOption2={selectedOption}
           loading={loader}
           handleChangeDate={handleChangeDate}
         />

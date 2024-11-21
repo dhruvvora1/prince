@@ -1,30 +1,22 @@
 /* eslint-disable  no-unused-vars */
 import React from "react";
-import { Button, Card, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import comminitiesSevice from "../../services/blog.service";
-import { AddPage, DeleteImages, DeleteImagesModal } from "./modalCommunities";
-import Select from "react-select";
-import pageTypeSevice from "../../services/Dashboard.service";
+import { AddPage, DeleteImagesModal } from "./modalCommunities";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import withLoader from "../../layout/loader/withLoader";
 import UserTable from "./userTable";
-import moment from "moment";
 import learningSevice from "../../services/learning.service";
 
 const Blog = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
-  const [listof, setListof] = useState([]);
-  const [idListOfData, setIdListOfData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [update, setUpdate] = useState("");
   const [loader, setLoader] = useState(false);
-  const [selectedType2, setSelectedType2] = useState("");
   const [image, setImage] = useState("");
   const [openDelete, setOpenDelete] = useState(false);
   const handleCloseDelete = () => setOpenDelete(false);
@@ -41,25 +33,6 @@ const Blog = () => {
   useEffect(() => {
     getAllPage();
   }, []);
-
-  const options = [
-    { value: " ", label: "All" },
-    ...listof.map((item, index) => ({
-      value: idListOfData[index],
-      label: item,
-    })),
-  ];
-
-  const options2 = [
-    ...listof.map((item, index) => ({
-      value: idListOfData[index],
-      label: item,
-    })),
-  ];
-
-  const selectedOption = options.find(
-    (option) => option.value === Object(idListOfData)
-  );
 
   const initialValue = {
     heading:"",
@@ -126,11 +99,6 @@ const Blog = () => {
     validationSchema:schema,
     onSubmit: handleFormSubmit,
   });
-
-  const handleTypeChange2 = (selectedOption) => {
-    setSelectedType2(selectedOption?.value);
-    formik.setFieldValue("type", selectedOption?.value);
-  };
 
   const handleOpen = async (id) => {
     setOpen(true);
@@ -210,10 +178,7 @@ const Blog = () => {
           onHide={handleClose}
           update={update}
           formik={formik}
-          options={options2}
           image={image}
-          selectedOption2={selectedOption}
-          handleTypeChange2={handleTypeChange2}
           loading={loader}
         />
       </div>

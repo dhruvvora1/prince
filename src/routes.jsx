@@ -13,6 +13,8 @@ const Yearly = lazy(() => import("./app/component/Yearly"));
 const Monthly = lazy(() => import("./app/component/Monthly"));
 const Weekly = lazy(() => import("./app/component/Weekly"));
 const Daily = lazy(() => import("./app/component/Daily"));
+const Mutual = lazy(() => import("./app/component/Mutualfund"));
+const Commodity = lazy(() => import("./app/component/Commodity"));
 const Notification = lazy(() => import("./app/component/Notification"));
 
 function RedirectionWrapper({ to }) {
@@ -43,6 +45,14 @@ const routes = (isLoggedIn) => [
       {
         path: "/broker/",
         element: <Broker />,
+      },
+      {
+        path: "/commodity/",
+        element: <Commodity />,
+      },
+      {
+        path: "/mutual/",
+        element: <Mutual />,
       },
       {
         path: "/learning",

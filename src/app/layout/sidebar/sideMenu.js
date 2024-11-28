@@ -26,12 +26,28 @@ export const MENUITEMS = [
         title: "Broker",
       },
       {
+        path: `/mutual`,
+        icon: "ti-bookmark-alt",
+        type: "link",
+        active: false,
+        selected: false,
+        title: "Mutual fund",
+      },
+      {
         path: `/learning`,
         icon: "ti-filter",
         type: "link",
         active: false,
         selected: false,
         title: "Learning",
+      },
+      {
+        path: `/commodity`,
+        icon: "ti-filter",
+        type: "link",
+        active: false,
+        selected: false,
+        title: "Commidity",
       },
       {
         path: `/intraday`,

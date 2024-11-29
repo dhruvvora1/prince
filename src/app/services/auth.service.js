@@ -20,10 +20,15 @@ const Dashboard = () => {
   const response = serverCall.get(`/dashboard/total`);
   return response;
 };
+const Setting = () => {
+  const response = serverCall.get(`/dashboard/total`);
+  return response;
+};
 
 const AuthenticationService = {
   signUp,
-  Dashboard
+  Dashboard,
+  Setting
 };
 
 export default AuthenticationService;

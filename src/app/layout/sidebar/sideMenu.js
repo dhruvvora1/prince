@@ -105,6 +105,14 @@ export const MENUITEMS = [
         selected: false,
         title: "Notification",
       },
+      {
+        path: `/setting`,
+        icon: "ti-filter",
+        type: "link",
+        active: false,
+        selected: false,
+        title: "Setting",
+      },
     ],
   },
 ];

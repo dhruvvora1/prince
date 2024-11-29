@@ -3,6 +3,7 @@ import { Navigate, useRoutes } from "react-router-dom";
 import AuthLogin from "./app/authentication/login";
 import MatxLayout from "./app/component/maxLayout";
 import NotFound from "./app/layout/sessions/NotFound";
+import Setting from "./app/component/setting";
 const PageType = lazy(() => import("./app/component/dashboard/index"));
 const Blog = lazy(() => import("./app/component/blog/index"));
 const Learning = lazy(() => import("./app/component/learning"));
@@ -49,6 +50,10 @@ const routes = (isLoggedIn) => [
       {
         path: "/commodity/",
         element: <Commodity />,
+      },
+      {
+        path: "/setting/",
+        element: <Setting />,
       },
       {
         path: "/mutual/",

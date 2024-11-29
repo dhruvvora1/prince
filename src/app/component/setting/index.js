@@ -4,16 +4,31 @@ import { useState } from "react";
 import withLoader from "../../layout/loader/withLoader";
 import AuthenticationService from "../../services/auth.service";
 import { AddPage } from "./modalCommunities";
+import { useFormik } from "formik";
 
-const PageType = () => {
+const Setting = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
-
+  const [loader, setLoader] = useState(false);
+  const handleClose = () => setOpen(false);
   const getAllPageList = async (list) => {
-    const response = await AuthenticationService.Dashboard();
+    const response = await AuthenticationService.Setting();
     setData(response.data.apiresponse.data);
     console.log(response, "response");
   };
+
+  const handleFormSubmit = async () =>{
+    const response = await AuthenticationService.Setting(formik.values);
+  }
+  
+  const formik = useFormik({
+    initialValues: {
+      name:""
+    },
+    onSubmit: handleFormSubmit,
+  });
+
+
 
   useEffect(() => {
     getAllPageList();
@@ -88,17 +103,12 @@ const PageType = () => {
         <AddPage
           show={open}
           onHide={handleClose}
-          update={update}
-          formik={formik}
-          options={options2}
-          image={image}
-          selectedOption2={selectedOption}
           loading={loader}
-          handleChangeDate={handleChangeDate}
+          formik={formik}
         />
       </div>
     </>
   );
 };
 
-export default withLoader(PageType);
+export default withLoader(Setting);

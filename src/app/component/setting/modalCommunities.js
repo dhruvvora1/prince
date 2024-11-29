@@ -6,25 +6,10 @@ import Weeklyevice from "../../services/weekly.service";
 
 export function AddPage(props) {
   const {formik} = props
-  const [selectedimages, setSelectedimages] = useState([]);
-  const showFileToUpload = (e) => {
-    const selectedFile = e.currentTarget.files[0];
-    formik.setFieldValue("file", selectedFile);
-    setSelectedimages([selectedFile]);
-    const imageUrl = URL.createObjectURL(selectedFile);
-    setSelectedimages((previousImages) => [imageUrl]);
-  };
-
-  useEffect(() => {
-    if(props.update && selectedimages.length === 0 && props.formik.values.file){
-      setSelectedimages([props.formik.values.file])
-    }
-  }, [formik])
 
   const handleClose = () =>{
     props.onHide()
     formik.resetForm();
-    setSelectedimages([])
   }
 
   return (
@@ -43,7 +28,7 @@ export function AddPage(props) {
             <div className="card custom-card">
               <form onSubmit={formik.handleSubmit}>
                 <h4>
-                  {props.update ? "Update Weekly" : "Add Weekly"}
+                  Update url
                 </h4>
                 <div className="col-12">
                   <Form.Group
